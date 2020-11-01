@@ -1,0 +1,112 @@
+managed;
+
+define behavior for ZI_CDS_TRAVEL_M alias travel
+implementation in class zcl_imp_travel_m unique
+persistent table /dmo/travel_m
+//with unmanaged save
+etag master last_changed_at
+lock master
+
+{
+
+  // administrative fields: read only
+  field ( readonly ) last_changed_at, last_changed_by, created_at, created_by;
+
+  // mandatory fields that are required to create a travel
+  field ( mandatory ) agency_id, customer_id, begin_date, end_date, overall_status, booking_fee, currency_code;
+
+  // dynamic field control
+  field ( features : instance ) travel_id;
+
+
+  // dynamic action control
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+
+  // instance action for copying travel instances
+  action createTravelByTemplate result [1] $self;
+
+  // Validations
+  validation validateCustomer on save { field customer_id; }
+  validation validateAgency on save { field agency_id; }
+  validation validateDates on save { field begin_date, end_date; }
+  validation validateStatus on save
+  { field overall_status; }
+
+    // No determinations for travel entity
+
+    mapping for /DMO/TRAVEL_M corresponding;
+
+    create;
+    update;
+    delete;
+
+    // dynamic operation control
+    association _Booking { create ( features : instance ); }
+  }
+
+  define behavior for ZI_CDS_Booking_M alias booking
+  implementation in class zcl_imp_booking_m unique
+  persistent table /dmo/booking_m
+  etag master last_changed_at
+  lock dependent by _Travel
+
+  {
+
+    // static field control
+    field ( mandatory ) carrier_id, connection_id, flight_date, booking_status;
+    field ( readonly ) travel_id;
+
+    // dynamic field control
+    field ( features : instance ) booking_id, booking_date, customer_id;
+
+    // Validations
+    validation validateStatus on save
+    { field booking_status; }
+
+      // Determination
+      determination calculateTotalFlightPrice on modify
+      { field flight_price, currency_code; }
+
+        // No actions defined for bookings
+        mapping for /DMO/BOOKING_M corresponding;
+
+        update;
+
+        // dynamic operation control
+        association _BookSupplement { create ( features : instance ); }
+
+        association _Travel { }
+      }
+
+
+      define behavior for ZI_CDS_BookSuppl_M alias booksuppl
+      implementation in class zcl_imp_booksuppl_m unique
+//      persistent table /dmo/booksuppl_m
+       with unmanaged save
+      etag master last_changed_at
+      lock dependent by _Travel
+
+      {
+
+        // static field control
+        field ( mandatory ) supplement_id, price;
+        field ( readonly ) travel_id, booking_id;
+
+        // dynamic field control
+        field ( features : instance ) booking_supplement_id;
+
+        // No validations
+
+        // determination for calculation of total suppl. price
+        determination calculateTotalSupplmPrice on modify
+        { field price, currency_code; }
+
+          // No actions defined for booking supplements
+          mapping for /DMO/BOOKSUPPL_M corresponding;
+
+          update;
+
+
+          association _Travel { }
+        }

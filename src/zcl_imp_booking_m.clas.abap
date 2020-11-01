@@ -1,0 +1,7 @@
+
+
+CLASS zcl_imp_booking_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_cds_travel_m.
+ENDCLASS.
+
+CLASS zcl_imp_booking_m IMPLEMENTATION.
+ENDCLASS.
