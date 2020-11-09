@@ -3,7 +3,7 @@ managed;
 define behavior for ZI_CDS_TRAVEL_M alias travel
 implementation in class zcl_imp_travel_m unique
 persistent table /dmo/travel_m
-//with unmanaged save
+with additional save
 etag master last_changed_at
 lock master
 
@@ -82,8 +82,8 @@ lock master
 
       define behavior for ZI_CDS_BookSuppl_M alias booksuppl
       implementation in class zcl_imp_booksuppl_m unique
-//      persistent table /dmo/booksuppl_m
-       with unmanaged save
+      //      persistent table /dmo/booksuppl_m
+      with unmanaged save
       etag master last_changed_at
       lock dependent by _Travel
 

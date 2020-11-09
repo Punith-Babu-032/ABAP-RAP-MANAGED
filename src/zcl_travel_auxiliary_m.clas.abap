@@ -7,9 +7,9 @@ CLASS zcl_travel_auxiliary_m DEFINITION
 
 *   Type definition for import parameters --------------------------
     TYPES tt_travel_id                 TYPE TABLE OF /dmo/travel_id.
-    TYPES tt_travel_reported            TYPE TABLE FOR REPORTED /dmo/i_travel_m.
-    TYPES tt_booking_reported           TYPE TABLE FOR REPORTED  /dmo/i_booking_m.
-    TYPES tt_bookingsupplement_reported TYPE TABLE FOR REPORTED  /dmo/i_booksuppl_m.
+    TYPES tt_travel_reported            TYPE TABLE FOR REPORTED zi_cds_travel_m.
+    TYPES tt_booking_reported           TYPE TABLE FOR REPORTED  zi_cds_booking_m.
+    TYPES tt_bookingsupplement_reported TYPE TABLE FOR REPORTED  zi_cds_booksuppl_m.
 
 *   Method for price calculation (used in determination calls) --------
     CLASS-METHODS calculate_price

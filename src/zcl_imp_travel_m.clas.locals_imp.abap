@@ -26,8 +26,7 @@ CLASS lhc_saver IMPLEMENTATION.
         GET TIME STAMP FIELD <fs_travel_log_c>-created_at.
 
         " Read travel instance data into ls_travel that includes %control structure
-        READ TABLE create-travel WITH TABLE KEY entity COMPONENTS travel_id = <fs_travel_log_c>-travel_id
-                                                        INTO DATA(ls_travel).
+        READ TABLE create-travel WITH TABLE KEY entity COMPONENTS travel_id = <fs_travel_log_c>-travel_id INTO DATA(ls_travel).
         IF sy-subrc = 0.
 
           " If new value of the booking_fee field created
@@ -239,16 +238,16 @@ CLASS lhc_travel IMPLEMENTATION.
     DATA lt_create TYPE TABLE FOR CREATE zi_cds_travel_m\\travel.
 
     lt_create = VALUE #( FOR row IN  lt_read_result INDEX INTO idx
-                            ( travel_id      = lv_travel_id + idx
-                              agency_id      = row-agency_id
-                              customer_id    = row-customer_id
-                              begin_date     = lv_today
-                              end_date       = lv_today + 30
-                              booking_fee    = row-booking_fee
-                              total_price    = row-total_price
-                              currency_code  = row-currency_code
-                              description    = 'Enter your comments here'
-                              overall_status = 'O' ) ). " Open
+                             ( travel_id      = lv_travel_id + idx
+                               agency_id      = row-agency_id
+                               customer_id    = row-customer_id
+                               begin_date     = lv_today
+                               end_date       = lv_today + 30
+                               booking_fee    = row-booking_fee
+                               total_price    = row-total_price
+                               currency_code  = row-currency_code
+                               description    = 'Enter your comments here'
+                               overall_status = 'O' ) ). " Open
 
 
     MODIFY ENTITIES OF zi_cds_travel_m IN LOCAL MODE
