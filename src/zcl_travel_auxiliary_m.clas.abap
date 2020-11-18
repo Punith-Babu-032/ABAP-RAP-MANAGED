@@ -17,10 +17,12 @@ CLASS zcl_travel_auxiliary_m DEFINITION
 
   PROTECTED SECTION.
 
-  ENDCLASS.
+ENDCLASS.
 
 
-CLASS zcl_travel_auxiliary_m IMPLEMENTATION.
+
+CLASS ZCL_TRAVEL_AUXILIARY_M IMPLEMENTATION.
+
 
   METHOD calculate_price.
 

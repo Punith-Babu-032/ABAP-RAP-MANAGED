@@ -1,0 +1,34 @@
+projection;
+
+define behavior for ZC_Travel_Processor_M alias TravelProcessor
+use etag
+{
+  field ( readonly ) TotalPrice;
+
+  use create;
+  use update;
+  use delete;
+
+  use action createTravelByTemplate;
+
+  use association _Booking { create; }
+}
+
+define behavior for ZC_Booking_Processor_M alias BookingProcessor
+use etag
+{
+  use update;
+  //  use delete; // workaround for missing determination on delete
+
+  use association _BookSupplement { create; }
+  use association _Travel { }
+
+}
+
+define behavior for ZC_BookSuppl_Processor_M alias BookSupplProcessor
+use etag
+{
+  use update;
+  //  use delete; // workaround for missing determination on delete
+  use association _Travel { }
+}
